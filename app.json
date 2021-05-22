@@ -1,0 +1,12 @@
+{
+  "name": "couple-wallpaper",
+  "displayName": "couple-wallpaper",
+  "expo": {
+    "name": "couple-wallpaper",
+    "slug": "couple-wallpaper",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
