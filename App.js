@@ -1,21 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { LogBox } from 'react-native';
+import { Provider } from 'react-redux';
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/es/integration/react';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+ import Router from './src/Router';
+ import store from './src/store/configureStore';
+ import { Languages } from './src/common';
+
+class App extends Component {
+  async componentDidMount() {
+    LogBox.ignoreLogs([
+      'VirtualizedLists should never be nested', // turn off the warning because the Parallax layout need it.
+      'componentWillMount has been renamed', // turn off untill we upgrade/replace tcomb-form-native and react-native-fluid-slider.
+      'componentWillReceiveProps has been renamed', // turn off untill we upgrade/replace tcomb-form-native and react-native-fluid-slider.
+    ]);
+
+    const language = 'vi'; // store.getState().language;
+    // set default Language for App
+    Languages.setLanguage(language);
+  }
+
+  render() {
+    const persistor = persistStore(store);
+    return (
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <Router />
+        </PersistGate>
+      </Provider>
+    );
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
